@@ -44,7 +44,7 @@ public class CheckLicenseValidity {
             now = simpleDateFormat.parse(current_date);
 
             //get the difference between expiry date and current date in milli sec
-            diff = expiryDate.getTime() - now.getTime();
+            diff = expiryDate.getTime() - now.getTime() + ONE_DAY;
             //get no of days from milli sec
             days = diff / ONE_DAY;
 

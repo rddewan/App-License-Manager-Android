@@ -232,6 +232,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void getLicense(){
+        key = String.valueOf(settingPreferences.getLicenseKey(context));
         if (!key.equals("0")){
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Utils.WEB_URL, new Response.Listener<String>() {
                 @Override
@@ -426,6 +427,7 @@ public class MainActivity extends AppCompatActivity
     if license is expired exit the app
      */
     private void CheckValidity(){
+        key = String.valueOf(settingPreferences.getLicenseKey(context));
         String expiry_date = settingPreferences.getExpiryDate(context);
         if (!expiry_date.equals("")){
             CheckLicenseValidity licenseValidity = new CheckLicenseValidity(context);
