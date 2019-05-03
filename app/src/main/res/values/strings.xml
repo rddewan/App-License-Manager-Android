@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">LicenseManager</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_license">License</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_tools">Tools</string>
+    <string name="menu_share">Share</string>
+    <string name="menu_send">Send</string>
+
+    <string name="error_204">No Content.</string>
+    <string name="error_401">Sorry, you are not authorized.</string>
+    <string name="error_411">Sorry, There is a no record in the file.Please check your file.</string>
+    <string name="error_404">Sorry, the page you are looking for could not be found.</string>
+    <string name="error_400">Bad Request.</string>
+    <string name="error_500">Internal Server Error.</string>
+    <string name="error_503">Service Unavailable.Please try later.</string>
+    <string name="error_502">Bad Gateway.</string>
+    <string name="error_504">Gateway Timeout.</string>
+    <string name="error_406">Sorry! Your App Has Expired!.Please Contact Us If You Would Like To
+        Buy A Full Version Of This App.</string>
+    <string name="title_activity_license">License</string>
+
+    <string name="lb_machine_id">MachineId:</string>
+    <string name="lb_license_key">LicenseKey:</string>
+    <string name="lb_expiry_date">ExpiryDate:</string>
+    <string name="lb_remaining_days">RemainingDays:</string>
+    <string name="lb_license_title">License Manager</string>
+
+</resources>
