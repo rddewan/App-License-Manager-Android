@@ -5,8 +5,6 @@ App license manager android client
 <br>
 https://github.com/rddewan/App-License-Manager-WEB
 
-<br>
-<br>
 ![img](https://github.com/rddewan/App-License-Manager-WEB/blob/master/storage/app/public/App/Screenshot_20190503-150212.jpg)
 <br>
 ![img](https://github.com/rddewan/App-License-Manager-WEB/blob/master/storage/app/public/App/Screenshot_20190503-150228.jpg)
