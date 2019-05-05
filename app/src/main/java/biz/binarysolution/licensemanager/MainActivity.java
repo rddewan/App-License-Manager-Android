@@ -8,14 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.TestLooperManager;
 import android.provider.Settings;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
@@ -49,8 +45,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import biz.binarysolution.licensemanager.license.ActivateLicense;
 import biz.binarysolution.licensemanager.license.CheckLicenseValidity;
-import biz.binarysolution.licensemanager.license.License;
+import biz.binarysolution.licensemanager.services.utilities.ScheduleTask;
 import biz.binarysolution.licensemanager.settings.AppSettingPreferences;
 
 public class MainActivity extends AppCompatActivity
@@ -73,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         //
         builder = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         settingPreferences = new AppSettingPreferences();
-        key = String.valueOf(settingPreferences.getLicenseKey(context));
+        key = settingPreferences.getLicenseKey(context);
 
         //
         txtMachineId = findViewById(R.id.txtMachineId);
@@ -94,6 +91,8 @@ public class MainActivity extends AppCompatActivity
         requestPermission();
         //check license validity
         CheckValidity();
+        //schedule task
+        ScheduleTask.scheduleLicenseCheck(this);
     }
 
     @Override
@@ -137,7 +136,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             // Handle the camera action
         } else if (id == R.id.nav_license) {
-            Intent intent = new Intent(getApplicationContext(), License.class);
+            Intent intent = new Intent(getApplicationContext(), ActivateLicense.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_slideshow) {
@@ -195,6 +194,8 @@ public class MainActivity extends AppCompatActivity
         TelephonyManager telephonyManager =
                 (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         imei = telephonyManager.getDeviceId();
+        //save machine id
+        settingPreferences.saveMachineId(context,imei);
     }
 
     /**
@@ -232,8 +233,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void getLicense(){
-        key = String.valueOf(settingPreferences.getLicenseKey(context));
-        if (!key.equals("0")){
+        key = settingPreferences.getLicenseKey(context);
+        if (!key.equals("")){
             StringRequest stringRequest = new StringRequest(Request.Method.POST, Utils.WEB_URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -254,7 +255,7 @@ public class MainActivity extends AppCompatActivity
                         System.out.println(jsonObject.get("van_sales"));
                         //save data
                         String expiry_date = jsonObject.get("expiration_date").toString();
-                        int license_key = Integer.parseInt(jsonObject.get("key").toString());
+                        String license_key = jsonObject.get("key").toString();
                         int remaining_days = Integer.parseInt(jsonObject.get("remaining_days").toString());
                         settingPreferences.saveExpiryDate(context,expiry_date);
                         settingPreferences.saveLicenseKey(context,license_key);
@@ -334,7 +335,7 @@ public class MainActivity extends AppCompatActivity
                                     //save data
                                     jsonObject = new JSONObject(json);
                                     String expiry_date = jsonObject.get("expiration_date").toString();
-                                    int license_key = Integer.parseInt(jsonObject.get("key").toString());
+                                    String license_key = jsonObject.get("key").toString();
                                     int remaining_days = Integer.parseInt(jsonObject.get("remaining_days").toString());
                                     settingPreferences.saveExpiryDate(context,expiry_date);
                                     settingPreferences.saveLicenseKey(context,license_key);
@@ -427,7 +428,7 @@ public class MainActivity extends AppCompatActivity
     if license is expired exit the app
      */
     private void CheckValidity(){
-        key = String.valueOf(settingPreferences.getLicenseKey(context));
+        key = settingPreferences.getLicenseKey(context);
         String expiry_date = settingPreferences.getExpiryDate(context);
         if (!expiry_date.equals("")){
             CheckLicenseValidity licenseValidity = new CheckLicenseValidity(context);
@@ -458,7 +459,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                Intent intent = new Intent(context, License.class);
+                Intent intent = new Intent(context, ActivateLicense.class);
                 context.startActivity(intent);
 
             }
@@ -480,7 +481,7 @@ public class MainActivity extends AppCompatActivity
         alert.setNegativeButton("Activate", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(getApplicationContext(), License.class);
+                Intent intent = new Intent(getApplicationContext(), ActivateLicense.class);
                 startActivity(intent);
 
             }

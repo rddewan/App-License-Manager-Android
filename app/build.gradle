@@ -33,4 +33,6 @@ dependencies {
     //https://github.com/Karumi/Dexter
     implementation 'com.karumi:dexter:5.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
+    // Firebase Job Dispatcher
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
 }

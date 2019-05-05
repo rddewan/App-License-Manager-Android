@@ -5,6 +5,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name=".MyApplication"
@@ -15,10 +17,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <service
+            android:name=".services.LicenseJobService"
+            android:enabled="true"
+            android:exported="false">
+        <intent-filter>
+            <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+        </intent-filter>
+        </service>
+
         <activity
-            android:name=".license.License"
+            android:name=".license.ActivateLicense"
             android:label="@string/title_activity_license"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

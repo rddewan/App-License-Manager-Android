@@ -11,12 +11,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
-import android.text.Editable;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -44,14 +42,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import biz.binarysolution.licensemanager.MainActivity;
 import biz.binarysolution.licensemanager.R;
 import biz.binarysolution.licensemanager.Utils;
 import biz.binarysolution.licensemanager.VolleySingleton;
 import biz.binarysolution.licensemanager.settings.AppSettingPreferences;
 
-public class License extends AppCompatActivity {
-    private static final String TAG = License.class.getSimpleName();
+public class ActivateLicense extends AppCompatActivity {
+    private static final String TAG = ActivateLicense.class.getSimpleName();
     private String imei,key,app_id = "1";
 
     Activity context = this;
@@ -70,7 +67,7 @@ public class License extends AppCompatActivity {
         //setting preferences
         builder = new AlertDialog.Builder(context,R.style.AlertDialogStyle);
         settingPreferences = new AppSettingPreferences();
-        key = String.valueOf(settingPreferences.getLicenseKey(context));
+        key = settingPreferences.getLicenseKey(context);
 
         etxtIMEI = findViewById(R.id.txtIMEI);
         etxtLicense = findViewById(R.id.txtLicense);
@@ -160,7 +157,7 @@ public class License extends AppCompatActivity {
      * NOTE: Keep proper title and message depending on your app
      */
     private void showSettingsDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(License.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ActivateLicense.this);
         builder.setTitle("Need Permissions");
         builder.setMessage("This app needs permission to use this feature. You can grant them in app settings.");
         builder.setPositiveButton("GOTO SETTINGS", new DialogInterface.OnClickListener() {
@@ -210,17 +207,17 @@ public class License extends AppCompatActivity {
                     System.out.println(jsonObject.get("van_sales"));
                     //save data
                     String expiry_date = jsonObject.get("expiration_date").toString();
-                    int license_key = Integer.parseInt(jsonObject.get("key").toString());
+                    String license_key = jsonObject.get("key").toString();
                     int remaining_days = Integer.parseInt(jsonObject.get("remaining_days").toString());
                     settingPreferences.saveExpiryDate(context,expiry_date);
-                    settingPreferences.saveLicenseKey(context,license_key);
+                    settingPreferences.saveLicenseKey(context, license_key);
                     settingPreferences.saveRemainingDays(context,remaining_days);
                     //dismiss progress dialog
                     progressDialog.dismiss();
                     //
                     builder.setTitle("Great!");
                     builder.setCancelable(false);
-                    builder.setMessage("License registered successfully.");
+                    builder.setMessage("ActivateLicense registered successfully.");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -299,7 +296,7 @@ public class License extends AppCompatActivity {
                                 //save data
                                 jsonObject = new JSONObject(json);
                                 String expiry_date = jsonObject.get("expiration_date").toString();
-                                int license_key = Integer.parseInt(jsonObject.get("key").toString());
+                                String license_key = jsonObject.get("key").toString();
                                 int remaining_days = Integer.parseInt(jsonObject.get("remaining_days").toString());
                                 settingPreferences.saveExpiryDate(context,expiry_date);
                                 settingPreferences.saveLicenseKey(context,license_key);
@@ -335,9 +332,27 @@ public class License extends AppCompatActivity {
                 }
                 else if (error instanceof TimeoutError) {
                     Log.e(TAG, "Oops. Timeout error!");
+                    builder.setMessage(context.getString(R.string.error_time_out));
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
 
                 } else {
                     Log.e("Error", "No Response From Server");
+                    builder.setMessage(context.getString(R.string.error_no_response));
+                    builder.setCancelable(false);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
 
                 }
 

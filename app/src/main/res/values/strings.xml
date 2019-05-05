@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LicenseManager</string>
+    <string name="app_name">License Manager</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -14,6 +14,9 @@
     <string name="menu_share">Share</string>
     <string name="menu_send">Send</string>
 
+
+    <string name="error_time_out">Oops. Timeout error! Please try again.</string>
+    <string name="error_no_response">No Response From Server Please try later.</string>
     <string name="error_204">No Content.</string>
     <string name="error_401">Sorry, you are not authorized.</string>
     <string name="error_411">Sorry, There is a no record in the file.Please check your file.</string>
@@ -32,5 +35,7 @@
     <string name="lb_expiry_date">ExpiryDate:</string>
     <string name="lb_remaining_days">RemainingDays:</string>
     <string name="lb_license_title">License Manager</string>
+
+    <string name="msg_license_expired">Your license has expired. Please activate your license.</string>
 
 </resources>
